@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.InputDevice;
 import android.view.KeyEvent;
+import android.widget.Toast;
 
 /**
  * @author Mr.Ye
@@ -16,7 +17,7 @@ public abstract class BaseScannerActivity extends AppCompatActivity {
     /**
      * 你的设备名字，可以通过日志查看
      */
-    private static final String BARCODE_DEVICES = "";
+    private static final String BARCODE_DEVICES = "xxx";
 
     /**
      * 最终扫到条码
@@ -47,27 +48,29 @@ public abstract class BaseScannerActivity extends AppCompatActivity {
      */
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if (hasBarcodeInputDeviceExist()) {
-            if (event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
-                int keyCode = event.getKeyCode();
-                if (keyCode >= KeyEvent.KEYCODE_0 && keyCode <= KeyEvent.KEYCODE_9) {
-                    scanResult.append(keyCode - KeyEvent.KEYCODE_0);
-                    Log.e("--------------识别中的付款码", scanResult + "");
-                    return true;
+//        if (hasBarcodeInputDeviceExist()) {
+        //此判断必须要有，只有Action Down状态下RepeatCount才会>0，避免长按和单击事件混淆；
+        if (event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
+            int keyCode = event.getKeyCode();
+            //因为是条码，按下的数值在0-9之间
+            if (keyCode >= KeyEvent.KEYCODE_0 && keyCode <= KeyEvent.KEYCODE_9) {
+                scanResult.append(keyCode - KeyEvent.KEYCODE_0);
+                Log.e("--------------识别中的付款码", scanResult + "");
+                return true;
+            }
+            //最终仪器会调用该事件
+            if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                Log.e("--------------识别到的付款码", scanResult + "");
+                //自行回调，eventbus 接口 广播，随便吧
+                if (mCodeCallBack != null) {
+                    mCodeCallBack.callback(scanResult.toString().trim());
                 }
-                if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                    Log.e("--------------识别到的付款码", scanResult + "");
-                    //自行回调，eventbus 接口 广播，随便吧
-                    if (mCodeCallBack != null) {
-                        mCodeCallBack.callback(scanResult.toString().trim());
-                    }
-
-                    //清空result
-                    scanResult = new StringBuilder();
-                    return true;
-                }
+                //清空result
+                scanResult = new StringBuilder();
+                return true;
             }
         }
+//        }
         return super.dispatchKeyEvent(event);
     }
 
