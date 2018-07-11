@@ -56,7 +56,8 @@ public abstract class BaseScannerActivity extends AppCompatActivity {
             if (keyCode >= KeyEvent.KEYCODE_0 && keyCode <= KeyEvent.KEYCODE_9) {
                 scanResult.append(keyCode - KeyEvent.KEYCODE_0);
                 Log.e("--------------识别中的付款码", scanResult + "");
-                return true;
+                //不能此处处理该事件，会导致输入框数字输入冲突
+//                return true;
             }
             //最终仪器会调用该事件
             if (keyCode == KeyEvent.KEYCODE_ENTER) {

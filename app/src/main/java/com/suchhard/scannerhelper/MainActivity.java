@@ -1,6 +1,7 @@
 package com.suchhard.scannerhelper;
 
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends BaseScannerActivity implements BaseScannerActivity.CodeCallBack {
@@ -13,7 +14,7 @@ public class MainActivity extends BaseScannerActivity implements BaseScannerActi
 
     @Override
     public void callback(String code) {
-        TextView textView = findViewById(R.id.tv_code);
-        textView.setText("scan code : " + code);
+        EditText et = findViewById(R.id.tv_code);
+        et.setText("scan code : " + code);
     }
 }

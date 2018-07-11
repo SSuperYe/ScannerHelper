@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     tools:context="com.suchhard.scannerhelper.MainActivity">
 
-    <TextView
+    <EditText
         android:id="@+id/tv_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="对准扫描仪器，滴一下试试吧"
+        android:hint="对准扫描仪器，滴一下试试吧，同时测试一下手动输入是否被拦截"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
